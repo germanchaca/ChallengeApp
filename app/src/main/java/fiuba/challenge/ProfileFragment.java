@@ -6,8 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class OpenChallengessFragment extends Fragment {
-    public OpenChallengessFragment() {
+public class ProfileFragment extends Fragment {
+    public ProfileFragment() {
         // Required empty public constructor
     }
 
@@ -20,6 +20,6 @@ public class OpenChallengessFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_open_challenges, container, false);
+        return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 }
