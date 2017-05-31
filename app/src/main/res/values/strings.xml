@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Challenge</string>
+    <string name="activity_challenge_qty_proofs">Challengers</string>
 </resources>

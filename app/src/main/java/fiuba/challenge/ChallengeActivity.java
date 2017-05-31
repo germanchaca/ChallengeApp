@@ -1,10 +1,15 @@
 package fiuba.challenge;
 
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +19,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fiuba.challenge.adapter.GridListAdapter;
-import fiuba.challenge.adapter.SimpleListAdapter;
-import fiuba.challenge.model.Challenge;
 import fiuba.challenge.model.Proof;
 import fiuba.challenge.model.User;
 
-public class ChallengeFragment extends Fragment {
-
+public class ChallengeActivity extends AppCompatActivity {
     protected RecyclerView mRecyclerView;
     protected GridListAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
@@ -28,25 +30,16 @@ public class ChallengeFragment extends Fragment {
 
     protected static int GRID_COLS = 2;
 
-    public ChallengeFragment() {
-        // Required empty public constructor
-    }
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
+        setContentView(R.layout.activity_challenge);
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_challenge, container, false);
+        challengeTitleTextView = (TextView) findViewById(R.id.challengeTitleTextView);
 
-        challengeTitleTextView = (TextView) rootView.findViewById(R.id.challengeTitleTextView);
+        mRecyclerView = (RecyclerView) findViewById(R.id.openChallengesRecyclerView);
 
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.openChallengesRecyclerView);
-
-        mLayoutManager = new GridLayoutManager(getActivity(),GRID_COLS);
+        mLayoutManager = new GridLayoutManager(this,GRID_COLS);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         List proofs = new ArrayList<Proof>();
@@ -59,12 +52,16 @@ public class ChallengeFragment extends Fragment {
         proofs.add(p2);
         proofs.add(p3);
         proofs.add(p4);
+        proofs.add(p1);
+        proofs.add(p2);
+        proofs.add(p3);
+        proofs.add(p4);
+
 
         mAdapter = new GridListAdapter(proofs);
 
         mRecyclerView.setAdapter(mAdapter);
-        return rootView;
-    }
 
+    }
 
 }
