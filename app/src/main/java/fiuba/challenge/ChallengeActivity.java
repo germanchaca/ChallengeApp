@@ -43,10 +43,10 @@ public class ChallengeActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         List proofs = new ArrayList<Proof>();
-        Proof p1 = new Proof("",new User("Charlie"));
-        Proof p2 = new Proof("",new User("Sam"));
-        Proof p3 = new Proof("",new User("Joe"));
-        Proof p4 = new Proof("",new User("Santi"));
+        Proof p1 = new Proof("",new User("Charlie"), null);
+        Proof p2 = new Proof("",new User("Sam"), null);
+        Proof p3 = new Proof("",new User("Joe"), null);
+        Proof p4 = new Proof("",new User("Santi"), null);
 
         proofs.add(p1);
         proofs.add(p2);
@@ -56,7 +56,10 @@ public class ChallengeActivity extends AppCompatActivity {
         proofs.add(p2);
         proofs.add(p3);
         proofs.add(p4);
-
+        proofs.add(p1);
+        proofs.add(p2);
+        proofs.add(p3);
+        proofs.add(p4);
 
         mAdapter = new GridListAdapter(proofs);
 

@@ -1,7 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <Button
+            android:id="@+id/buttonMyVideos"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:drawableLeft="@drawable/ic_video_library_black_24dp"
+            android:drawablePadding="@dimen/activity_horizontal_margin"
+            android:background="@color/cardview_light_background"
+            android:textColor="@color/primary_text"
+            android:drawableTint="@color/icons"
+            android:text="@string/profile_my_videos"
+            android:gravity="left|center_vertical"
+            />
 
-</LinearLayout>
+        <Button
+            android:id="@+id/buttonMyFavs"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:drawableLeft="@drawable/ic_star_border_black_24dp"
+            android:drawablePadding="@dimen/activity_horizontal_margin"
+            android:background="@color/cardview_light_background"
+            android:textColor="@color/primary_text"
+            android:drawableTint="@color/icons"
+            android:text="@string/profile_my_favs"
+            android:gravity="left|center_vertical"
+            />
+
+
+
+        <Button
+            android:id="@+id/buttonMyNotifications"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:drawableLeft="@drawable/ic_notifications_black_24dp"
+            android:drawablePadding="@dimen/activity_horizontal_margin"
+            android:background="@color/cardview_light_background"
+            android:textColor="@color/primary_text"
+            android:drawableTint="@color/icons"
+            android:text="@string/profile_my_notifications"
+            android:gravity="left|center_vertical"
+            />
+
+        <Button
+            android:id="@+id/buttonSignOut"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:drawableLeft="@drawable/ic_not_interested_black_24dp"
+            android:drawablePadding="@dimen/activity_horizontal_margin"
+            android:background="@color/cardview_light_background"
+            android:textColor="@color/primary_text"
+            android:drawableTint="@color/icons"
+            android:text="@string/profile_sign_out"
+            android:gravity="left|center_vertical"
+            />
+
+        <Button
+            android:id="@+id/buttonAboutUs"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:drawableLeft="@drawable/ic_help_black_24dp"
+            android:drawablePadding="@dimen/activity_horizontal_margin"
+            android:background="@color/cardview_light_background"
+            android:textColor="@color/primary_text"
+            android:drawableTint="@color/icons"
+            android:text="@string/profile_about_us"
+            android:gravity="left|center_vertical"
+            />
+
+    </LinearLayout>
+</ScrollView>

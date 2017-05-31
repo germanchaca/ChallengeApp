@@ -4,12 +4,14 @@ package fiuba.challenge.model;
  * Created by german on 5/31/2017.
  */
 public class Proof {
+    private final Challenge challenge;
     private String urlVideo;
     private User user;
 
-    public Proof(String urlVideo, User user) {
+    public Proof(String urlVideo, User user, Challenge challenge) {
         this.urlVideo = urlVideo;
         this.user = user;
+        this.challenge = challenge;
     }
 
     public User getUser() {
@@ -29,4 +31,7 @@ public class Proof {
     }
 
 
+    public Challenge getChallenge() {
+        return challenge;
+    }
 }

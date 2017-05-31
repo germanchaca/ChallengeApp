@@ -11,13 +11,13 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-import fiuba.challenge.adapter.SimpleListAdapter;
+import fiuba.challenge.adapter.OpenChallengesListAdapter;
 import fiuba.challenge.model.Challenge;
 
 public class OpenChallengesFragment extends Fragment {
 
     protected RecyclerView mRecyclerView;
-    protected SimpleListAdapter mAdapter;
+    protected OpenChallengesListAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
 
     public OpenChallengesFragment() {
@@ -45,7 +45,7 @@ public class OpenChallengesFragment extends Fragment {
         challenges.add(c1);
         challenges.add(c2);
         challenges.add(c3);
-        mAdapter = new SimpleListAdapter(challenges);
+        mAdapter = new OpenChallengesListAdapter(challenges);
 
         mRecyclerView.setAdapter(mAdapter);
         return rootView;

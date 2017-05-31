@@ -14,10 +14,10 @@ import fiuba.challenge.ChallengeActivity;
 import fiuba.challenge.R;
 import fiuba.challenge.model.Challenge;
 
-public class SimpleListAdapter extends RecyclerView.Adapter<SimpleListAdapter.SimpleViewHolder> {
+public class OpenChallengesListAdapter extends RecyclerView.Adapter<OpenChallengesListAdapter.SimpleViewHolder> {
     private List<Challenge> challengeList;
 
-    public SimpleListAdapter(List<Challenge> challenges){
+    public OpenChallengesListAdapter(List<Challenge> challenges){
         challengeList = challenges;
     }
 
