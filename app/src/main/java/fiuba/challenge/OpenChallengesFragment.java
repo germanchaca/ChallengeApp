@@ -14,13 +14,13 @@ import java.util.List;
 import fiuba.challenge.adapter.SimpleListAdapter;
 import fiuba.challenge.model.Challenge;
 
-public class OpenChallengessFragment extends Fragment {
+public class OpenChallengesFragment extends Fragment {
 
     protected RecyclerView mRecyclerView;
     protected SimpleListAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
 
-    public OpenChallengessFragment() {
+    public OpenChallengesFragment() {
         // Required empty public constructor
     }
 

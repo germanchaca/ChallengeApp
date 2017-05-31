@@ -1,6 +1,5 @@
 package fiuba.challenge;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -53,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new OpenChallengessFragment(), "ONE");
+        adapter.addFragment(new OpenChallengesFragment(), "ONE");
         adapter.addFragment(new HotProofsFragment(), "TWO");
         adapter.addFragment(new ProfileFragment(), "THREE");
         viewPager.setAdapter(adapter);
