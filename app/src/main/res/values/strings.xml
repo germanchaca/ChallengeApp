@@ -12,8 +12,16 @@
 
     <string name="profile_my_videos">Mis videos</string>
     <string name="profile_my_favs">Favoritos</string>
-
+    <string name="profile_my_settings">Configuración de cuenta</string>
     <string name="profile_my_notifications">Notifiaciones</string>
     <string name="profile_sign_out">Salir</string>
     <string name="profile_about_us">Sobre nosotros</string>
+
+    <string name="toolbar_menu_create">Crear challenge</string>
+
+    <string name="activity_create_challenge_title">Crear Challenge</string>
+    <string name="activity_create_challenge_title_text">Título</string>
+    <string name="activity_create_challenge_rules_text">Cargar reglas</string>
+
+
 </resources>

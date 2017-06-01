@@ -53,7 +53,20 @@
             android:text="@string/profile_my_notifications"
             android:gravity="left|center_vertical"
             />
-
+        <Button
+            android:id="@+id/buttonAccountSettings"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:drawableLeft="@drawable/ic_settings_black_24dp"
+            android:drawablePadding="@dimen/activity_horizontal_margin"
+            android:background="@color/cardview_light_background"
+            android:textColor="@color/primary_text"
+            android:drawableTint="@color/icons"
+            android:text="@string/profile_my_settings"
+            android:gravity="left|center_vertical"
+            />
         <Button
             android:id="@+id/buttonSignOut"
             android:layout_width="fill_parent"
