@@ -23,5 +23,10 @@
     <string name="activity_create_challenge_title_text">Título</string>
     <string name="activity_create_challenge_rules_text">Cargar reglas</string>
 
+    <string name="error">Error</string>
+    <string name="error_format">[Error] %s</string>
+    <string name="accounts">Cuentas</string>
+    <string name="refresh">Actualizar</string>
+
 
 </resources>

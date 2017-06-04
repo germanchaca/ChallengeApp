@@ -15,6 +15,8 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 import java.util.List;
 
+import fiuba.challenge.youtube.YoutubeUploadActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
@@ -40,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.createChallenge:
 
-                Intent intent = new Intent(this,CreateChallengeActivity.class);
+                Intent intent = new Intent(this,YoutubeUploadActivity.class);
                 startActivity(intent);
 
                 return true;
