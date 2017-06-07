@@ -1,8 +1,8 @@
 package fiuba.challenge.youtube;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.TimeZone;
 import java.util.logging.Level;
@@ -35,47 +35,34 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.GooglePlayServicesUtil;
+
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 
 import com.google.api.client.json.gson.GsonFactory;
+import com.google.api.client.util.ExponentialBackOff;
+import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.YouTubeScopes;
 
 import fiuba.challenge.R;
 
 public class SubmitActivity extends Activity {
 
-	
 	  private static final Level LOGGING_LEVEL = Level.OFF;
-
 	  private static final String PREF_ACCOUNT_NAME = "accountName";
-	
 	  static final String TAG = "YoutubeSampleActivity";
-	
 	  static final int REQUEST_GOOGLE_PLAY_SERVICES = 0;
-	
 	  static final int REQUEST_AUTHORIZATION = 1;
-	
 	  static final int REQUEST_ACCOUNT_PICKER = 2;
-	
-	  final HttpTransport transport = AndroidHttp.newCompatibleTransport();
-	  
-	  final JsonFactory jsonFactory = new GsonFactory();
 
-	public static final String[] SCOPES = {YouTubeScopes.YOUTUBE_UPLOAD};
-	
-	  GoogleAccountCredential credential;
-	
 	  /** Global instance of Youtube object to make all API requests. */ 
-	  com.google.api.services.youtube.YouTube youtube;
-	  
+	  YouTube youtube;
 	  int numAsyncTasks;
 	  
 	  /* Global instance of the format used for the video being uploaded (MIME type). */
 	  private static String VIDEO_FILE_FORMAT = "video/*";
-	  
 	  
 	  Uri videoUri = null;
 	  TextView textViewStatus ;
@@ -83,31 +70,31 @@ public class SubmitActivity extends Activity {
 	  
 	  private Date dateTaken = null;
 	  private Long uploadFileSize = null;
-	 
-	  @Override
+	  private GoogleAccountCredential credential;
+
+    final HttpTransport httpTransport =  AndroidHttp.newCompatibleTransport();
+    final JsonFactory jsonFactory = new GsonFactory();
+
+	@Override
 	  public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	    // enable logging
 	    Logger.getLogger("com.google.api.client").setLevel(LOGGING_LEVEL);
-	    // view and menu
+
 	    setContentView(R.layout.activity_submit);
-	    
-	    // Google Accounts
-	    credential = GoogleAccountCredential.usingOAuth2(this, Arrays.asList(SCOPES));
-	    // save simple data 
-	    SharedPreferences settings = getPreferences(Context.MODE_PRIVATE);
-	    credential.setSelectedAccountName(settings.getString(PREF_ACCOUNT_NAME, null));
-	    // youtube client
-	    youtube = new com.google.api.services.youtube.YouTube.Builder(
-	        transport, jsonFactory, credential).setApplicationName("Google-YoutubeUploadAndroidSample/1.0")
-	        .build();
-	    
-	    
+
+		credential = GoogleAccountCredential.usingOAuth2(this, Collections.singleton(YouTubeScopes.YOUTUBE_UPLOAD));
+		SharedPreferences settings = getPreferences(Context.MODE_PRIVATE);
+		credential.setSelectedAccountName(settings.getString(PREF_ACCOUNT_NAME, null));
+        credential.setBackOff(new ExponentialBackOff());
+
+		youtube = new YouTube.Builder(httpTransport, jsonFactory, credential).setApplicationName("Google-TasksAndroidSample/1.0").build();
+
 	    Intent intent = this.getIntent();
 	    this.videoUri = intent.getData();
 	    Log.d(TAG,intent.getData().toString());
 	    
-	    Cursor cursor = this.managedQuery(this.videoUri, null, null, null, null);
+	    Cursor cursor = this.getContentResolver().query(this.videoUri, null, null, null, null);
 
 	    if (cursor.getCount() == 0) {
 	      Log.d("cursor==", "not a valid video uri");
@@ -115,7 +102,6 @@ public class SubmitActivity extends Activity {
 	    } else {
 	      
 	      if (cursor.moveToFirst()) {
-
 	        long id = cursor.getLong(cursor.getColumnIndex(MediaStore.Video.VideoColumns._ID));
 	        this.dateTaken = new Date(cursor.getLong(cursor.getColumnIndex(MediaStore.Video.VideoColumns.DATE_TAKEN)));
 	        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM d, yyyy hh:mm aaa");
@@ -123,12 +109,10 @@ public class SubmitActivity extends Activity {
 	        Settings.System.getConfiguration(getContentResolver(), userConfig);
 	        Calendar cal = Calendar.getInstance(userConfig.locale);
 	        TimeZone tz = cal.getTimeZone();
-
 	        dateFormat.setTimeZone(tz);
 	        
 	        this.uploadFileSize = cursor.getLong(cursor.getColumnIndex(MediaStore.Video.VideoColumns.SIZE));
-	        
-	        
+
 	        TextView dateTakenView = (TextView) findViewById(R.id.dateCaptured);
 	        dateTakenView.setText(" - Date captured: " + dateFormat.format(dateTaken) + "\n - FileSize: " + uploadFileSize/1024 + " KB ");
 
@@ -139,13 +123,10 @@ public class SubmitActivity extends Activity {
 	        Bitmap curThumb = MediaStore.Video.Thumbnails.getThumbnail(crThumb, id,
 	            MediaStore.Video.Thumbnails.MINI_KIND, options);
 	        thumbnail.setImageBitmap(curThumb);
-	        
-	        
-	        
+
 	        textViewStatus = (TextView) findViewById(R.id.textViewStatus);
 	      }
 	    }
-	    
 	    // startUpload(SubmitActivity.this.videoUri);
 	    findViewById(R.id.uploadButton).setOnClickListener(new OnClickListener() {
 		      @Override
@@ -155,11 +136,7 @@ public class SubmitActivity extends Activity {
 		    	  }
 		      }
 		    });
-	    
 	  }
-
-
-	 
 	  void showGooglePlayServicesAvailabilityErrorDialog(final int connectionStatusCode) {
 		    runOnUiThread(new Runnable() {
 		      public void run() {
@@ -170,17 +147,6 @@ public class SubmitActivity extends Activity {
 		      }
 		    });
 		  }
-
-	  void refreshView() {
-		  //  adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, tasksList);
-		  //  listView.setAdapter(adapter);
-	  }
-
-		  @Override
-	  protected void onResume() {
-	    super.onResume();
-	    
-	  }
 
 	  @Override
 	  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -255,6 +221,7 @@ public class SubmitActivity extends Activity {
 	      chooseAccount();
 	    } else {
 	      // upload youtube.
+
 	    	AsyncLoadYoutube.run(this);
 	    }
 	  }

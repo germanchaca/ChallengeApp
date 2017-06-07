@@ -22,12 +22,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import android.app.Activity;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.googleapis.media.MediaHttpUploader;
 import com.google.api.client.googleapis.media.MediaHttpUploaderProgressListener;
@@ -47,34 +49,23 @@ import fiuba.challenge.youtube.SubmitActivity;
 class AsyncLoadYoutube extends YoutubeAsyncTask {
 	
 	static final String TAG = "YoutubeSampleActivity";
-	
-  AsyncLoadYoutube(SubmitActivity submitActivity) {
+    static final int REQUEST_AUTHORIZATION = 1;
+    protected final SubmitActivity context;
+
+    AsyncLoadYoutube(SubmitActivity submitActivity) {
     super(submitActivity);
+      context = submitActivity;
   }
 
   @Override
   protected Video doInBackground() throws IOException {
-/*	  
-    List<String> result = new ArrayList<String>();
-    List<Task> tasks =
-        client.tasks().list("@default").setFields("items/title").execute().getItems();
-    if (tasks != null) {
-      for (Task task : tasks) {
-        result.add(task.getTitle());
-      }
-    } else {
-      result.add("No tasks.");
-    }
-    activity.tasksList = result;
-*/
-	String VIDEO_FILE_FORMAT = "video/*";
+
+          String VIDEO_FILE_FORMAT = "video/*";
+
 	Uri videoUri = activity.videoUri;
-	
-	
 	try {
-		
 		// We get the user selected local video file to upload.
-	      
+
 	      File videoFile = getFileFromUri(videoUri);
 	      Log.d(TAG,"You chose " + videoFile  + " to upload.");
 
@@ -86,7 +77,7 @@ class AsyncLoadYoutube extends YoutubeAsyncTask {
 	       * want to remove this in your code.  The default is public, which is what most people want.
 	       */
 	      VideoStatus status = new VideoStatus();
-	      status.setPrivacyStatus("unlisted");
+	      status.setPrivacyStatus("public");
 	      videoObjectDefiningMetadata.setStatus(status);
 
 	      // We set a majority of the metadata with the VideoSnippet object.
@@ -114,7 +105,7 @@ class AsyncLoadYoutube extends YoutubeAsyncTask {
 	      // Set completed snippet to the video object.
 	      videoObjectDefiningMetadata.setSnippet(snippet);
 
-	      InputStreamContent mediaContent = 
+	      InputStreamContent mediaContent =
 	    		  new InputStreamContent(VIDEO_FILE_FORMAT,
 	                                 new BufferedInputStream(new FileInputStream(videoFile)));
 	      mediaContent.setLength(videoFile.length());
@@ -125,14 +116,14 @@ class AsyncLoadYoutube extends YoutubeAsyncTask {
 	       *   2. Metadata we want associated with the uploaded video.
 	       *   3. Video file itself.
 	       */
-	      YouTube.Videos.Insert videoInsert = 
+	      YouTube.Videos.Insert videoInsert =
 	          youtube.videos().insert("snippet,statistics,status",
 	                                  videoObjectDefiningMetadata,
 	                                  mediaContent);
 
 	      // Set the upload type and add event listener.
 	      MediaHttpUploader uploader = videoInsert.getMediaHttpUploader();
-	      
+
 
 	      /*
 	       * Sets whether direct media upload is enabled or disabled.
@@ -169,17 +160,26 @@ class AsyncLoadYoutube extends YoutubeAsyncTask {
 	      uploader.setProgressListener(progressListener);
 
 	      // Execute upload.
-	      Video returnedVideo = videoInsert.execute();
-	      
+        Video returnedVideo = null;
+		try {
+            returnedVideo = videoInsert.execute();
+            String videoId = returnedVideo.getId();
+
+            Log.d(TAG, String.format("videoId = [%s]", videoId));
+		} catch (UserRecoverableAuthIOException e) {
+
+            ((Activity) context).startActivityForResult(e.getIntent(), REQUEST_AUTHORIZATION);
+		}
+
 	      return returnedVideo;
 	      // Print out returned results.
-	      
-	    		  
-	
+
+
+
 	} catch (GoogleJsonResponseException e) {
 	      Log.e(TAG,"GoogleJsonResponseException code: " + e.getDetails().getCode() + " : " + e.getDetails().getMessage());
 	      e.printStackTrace();
-	    
+
 	} catch (IOException e) {
 		  Log.e(TAG,"IOException: " + e.getMessage());
 	      e.printStackTrace();
@@ -187,12 +187,10 @@ class AsyncLoadYoutube extends YoutubeAsyncTask {
 	      Log.e(TAG,"Throwable: " + t.getMessage());
 	      t.printStackTrace();
     }
+
 	return null;
-	  
 
   }
-
-
 
   
   static void run(SubmitActivity submitActivity) {
