@@ -1,9 +1,11 @@
 package fiuba.challenge.model;
 
+import java.io.Serializable;
+
 /**
  * Created by german on 5/31/2017.
  */
-public class Proof {
+public class Proof implements Serializable {
     private final Challenge challenge;
     private String urlVideo;
     private User user;

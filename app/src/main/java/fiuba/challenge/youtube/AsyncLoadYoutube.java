@@ -166,6 +166,7 @@ class AsyncLoadYoutube extends YoutubeAsyncTask {
             String videoId = returnedVideo.getId();
 
             Log.d(TAG, String.format("videoId = [%s]", videoId));
+			context.endSubmit(videoId);
 		} catch (UserRecoverableAuthIOException e) {
 
             ((Activity) context).startActivityForResult(e.getIntent(), REQUEST_AUTHORIZATION);

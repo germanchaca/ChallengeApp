@@ -46,12 +46,18 @@
 
         </android.support.design.widget.TextInputLayout>
 
-        <Spinner
-            android:id="@+id/privacy"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            />
+            android:layout_marginBottom="@dimen/activity_vertical_margin">
+
+        <EditText
+            android:id="@+id/input_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/activity_create_challenge_description_text" />
+        </android.support.design.widget.TextInputLayout>
+
 
 
         <Button
@@ -59,6 +65,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:drawableLeft="@drawable/ic_videocam_black_24dp"
@@ -68,6 +75,7 @@
             android:drawableTint="@color/icons"
             android:text="@string/activity_create_challenge_rules_text"
             android:gravity="left|center_vertical"
+            android:onClick="selectVideo"
             />
 
 
