@@ -226,6 +226,13 @@ public class SubmitActivity extends Activity {
 	    }
 	  }
 
+	public void endSubmit(String videoId){
+		Intent i = getIntent();
+		i.putExtra("VIDEOID", videoId);
+		setResult(RESULT_OK, i);
+		finish();
+	}
+
 	  private void chooseAccount() {
 	    startActivityForResult(credential.newChooseAccountIntent(), REQUEST_ACCOUNT_PICKER);
 	  }

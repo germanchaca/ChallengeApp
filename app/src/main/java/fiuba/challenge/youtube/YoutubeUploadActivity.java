@@ -143,7 +143,9 @@ public class YoutubeUploadActivity extends Activity {
 	    case SUBMIT_RETURN:
 	      if (resultCode == RESULT_OK) {
 	        Toast.makeText(YoutubeUploadActivity.this, "thank you!", Toast.LENGTH_LONG).show();
-	      } else {
+              String videoId = data.getExtras().getString("VIDEOID");
+              Log.d("YoutubeUploadActivity",videoId );
+          } else {
 	      }
 	      break;
 	    }
