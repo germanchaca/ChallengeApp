@@ -21,12 +21,14 @@
             android:orientation="vertical"
             android:layout_marginBottom="5dp">
 
-            <ImageView
-                android:id="@+id/imageView"
-                android:scaleType="centerCrop"
+            <com.google.android.youtube.player.YouTubeThumbnailView
+                android:id="@+id/thumbnail"
                 android:layout_width="match_parent"
-                android:layout_height="160dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/no_thumbnail"
                 android:layout_marginBottom="5dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"
                 android:background="@color/primary"/>
 
             <TextView

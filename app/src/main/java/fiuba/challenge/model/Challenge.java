@@ -2,14 +2,14 @@ package fiuba.challenge.model;
 
 import android.graphics.drawable.Drawable;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by german on 5/31/2017.
  */
-public class Challenge {
+public class Challenge implements Serializable {
     private String title;
-    private Drawable frontImage;
     private String rulesVideoUrl;
     private List<Proof> proofs;
 
@@ -21,18 +21,9 @@ public class Challenge {
         this.proofs = proofs;
     }
 
-    public Challenge(String title, Drawable frontImage, String rulesVideoUrl) {
+    public Challenge(String title,  String rulesVideoUrl) {
         this.title = title;
-        this.frontImage = frontImage;
         this.rulesVideoUrl = rulesVideoUrl;
-    }
-
-    public Drawable getFrontImage() {
-        return frontImage;
-    }
-
-    public void setFrontImage(Drawable frontImage) {
-        this.frontImage = frontImage;
     }
 
     public String getRulesVideoUrl() {

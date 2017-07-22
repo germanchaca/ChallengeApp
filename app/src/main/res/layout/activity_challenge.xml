@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/videoContainer"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
@@ -9,18 +10,21 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
                       android:orientation="vertical"
                       android:layout_width="match_parent"
                       android:layout_height="match_parent">
-            <View
+
+            <com.google.android.youtube.player.YouTubePlayerView
             android:id="@+id/rulesVideoView"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:background="@color/primary"/>
+
 
             <TextView
                 android:id="@+id/challengeTitleTextView"
@@ -31,7 +35,8 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"/>
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="4dp"/>
 
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                           android:orientation="horizontal"
@@ -39,7 +44,7 @@
                           android:layout_height="wrap_content"
                           android:paddingLeft="@dimen/activity_horizontal_margin"
                           android:paddingRight="@dimen/activity_horizontal_margin"
-                          android:layout_marginBottom="@dimen/activity_vertical_margin">
+                          android:layout_marginBottom="8dp">
                 <TextView
                     android:id="@+id/challengeProofQtyTextView"
                     android:layout_width="wrap_content"
@@ -56,29 +61,46 @@
                     android:text="@string/activity_challenge_qty_proofs"
                     android:textAppearance="?android:attr/textAppearanceSmall"/>
             </LinearLayout>
-        </LinearLayout>
 
-        <android.support.design.widget.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_anchor="@id/rulesVideoView"
-            android:layout_centerHorizontal="true"
-            app:layout_anchorGravity="bottom|end"
-            android:layout_centerInParent="true"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:src="@drawable/ic_videocam_black_24dp"/>
-
-    </android.support.design.widget.CoordinatorLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/divider"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/openChallengesRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="vertical"
-        />
+            <Button
+                android:id="@+id/seeRulesButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ver Reglas del desafío"
+                android:layout_gravity="center"
+                android:gravity="center"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:textColor="@color/accent"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/divider"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/openChallengesRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            />
+        </LinearLayout>
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="bottom|right"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            app:elevation="@dimen/elevation"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:src="@drawable/ic_videocam_black_24dp"/>
+
+    </android.support.design.widget.CoordinatorLayout>
+
 
 </LinearLayout>

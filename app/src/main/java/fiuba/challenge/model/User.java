@@ -1,9 +1,11 @@
 package fiuba.challenge.model;
 
+import java.io.Serializable;
+
 /**
  * Created by german on 5/31/2017.
  */
-public class User {
+public class User implements Serializable{
     private String name;
 
     public User(String name) {

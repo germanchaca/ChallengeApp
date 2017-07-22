@@ -11,6 +11,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import com.google.android.youtube.player.YouTubeApiServiceUtil;
+import com.google.android.youtube.player.YouTubeInitializationResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    /** The request code when calling startActivityForResult to recover from an API service error. */
+    private static final int RECOVERY_DIALOG_REQUEST = 1;
 
     private int[] tabIcons = {
             R.drawable.ic_home_black_24dp,
@@ -42,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.createChallenge:
 
-                Intent intent = new Intent(this,YoutubeUploadActivity.class);
+                Intent intent = new Intent(this,CreateChallengeActivity.class);
                 startActivity(intent);
 
                 return true;
@@ -68,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         setupTabIcons();
+
+        this.checkYouTubeApi();
 
     }
     private void setupTabIcons() {
@@ -111,6 +119,16 @@ public class MainActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             // return null to display only the icon
             return null;
+        }
+    }
+
+    private void checkYouTubeApi() {
+        YouTubeInitializationResult errorReason =
+                YouTubeApiServiceUtil.isYouTubeApiServiceAvailable(this);
+        if (errorReason.isUserRecoverableError()) {
+            errorReason.getErrorDialog(this, RECOVERY_DIALOG_REQUEST).show();
+        } else if (errorReason != YouTubeInitializationResult.SUCCESS) {
+            Toast.makeText(this, errorReason.toString(), Toast.LENGTH_LONG).show();
         }
     }
 }

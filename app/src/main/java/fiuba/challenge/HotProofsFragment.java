@@ -43,9 +43,9 @@ public class HotProofsFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         List proofs = new ArrayList<Proof>();
-        Challenge c1 = new Challenge("Manniquin Challenge",null,"");
-        Challenge c2 = new Challenge("Ice bucket Challenge",null,"");
-        Challenge c3 = new Challenge("Basketball Challenge",null,"");
+        Challenge c1 = new Challenge("Manniquin Challenge","");
+        Challenge c2 = new Challenge("Ice bucket Challenge","");
+        Challenge c3 = new Challenge("Basketball Challenge","");
 
         Proof p1 = new Proof("", new User("Alex"),c1);
         Proof p2 = new Proof("", new User("Sam"),c2);

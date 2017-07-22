@@ -19,77 +19,77 @@ import com.google.api.client.googleapis.json.GoogleJsonError;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.util.Log;
 import android.widget.Toast;
 
 import fiuba.challenge.R;
 
-/**
- * Common utilities.
- * 
- * @author Yaniv Inbar
- */
 public class Utils {
-
-  /**
-   * Logs the given throwable and shows an error alert dialog with its message.
-   * 
-   * @param activity activity
-   * @param tag log tag to use
-   * @param t throwable to log and show
-   */
-  public static void logAndShow(Activity activity, String tag, Throwable t) {
-    Log.e(tag, "Error", t);
-    String message = t.getMessage();
-    if (t instanceof GoogleJsonResponseException) {
-      GoogleJsonError details = ((GoogleJsonResponseException) t).getDetails();
-      if (details != null) {
-        message = details.getMessage();
-      }
-    } else if (t.getCause() instanceof GoogleAuthException) {
-      message = ((GoogleAuthException) t.getCause()).getMessage();
+    public static final String API_KEY = "AIzaSyAAY1Ax2oaFV7Sti1bDocbhRZN7EiwOc0A ";
+    public static final int MAX_KEYWORD_LENGTH = 30;
+    public static final String DEFAULT_KEYWORD = "challenge";
+    public static final String APP_NAME = "challenge";
+    /**
+     * Logs the given throwable and shows an error alert dialog with its message.
+     *
+     * @param activity activity
+     * @param tag      log tag to use
+     * @param t        throwable to log and show
+     */
+    public static void logAndShow(Activity activity, String tag, Throwable t) {
+        Log.e(tag, "Error", t);
+        String message = t.getMessage();
+        if (t instanceof GoogleJsonResponseException) {
+            GoogleJsonError details = ((GoogleJsonResponseException) t).getDetails();
+            if (details != null) {
+                message = details.getMessage();
+            }
+        } else if (t.getCause() instanceof GoogleAuthException) {
+            message = ((GoogleAuthException) t.getCause()).getMessage();
+        }
+        showError(activity, message);
     }
-    showError(activity, message);
-  }
 
-  /**
-   * Logs the given message and shows an error alert dialog with it.
-   * 
-   * @param activity activity
-   * @param tag log tag to use
-   * @param message message to log and show or {@code null} for none
-   */
-  public static void logAndShowError(Activity activity, String tag, String message) {
-    String errorMessage = getErrorMessage(activity, message);
-    Log.e(tag, errorMessage);
-    showErrorInternal(activity, errorMessage);
-  }
-
-  /**
-   * Shows an error alert dialog with the given message.
-   * 
-   * @param activity activity
-   * @param message message to show or {@code null} for none
-   */
-  public static void showError(Activity activity, String message) {
-    String errorMessage = getErrorMessage(activity, message);
-    showErrorInternal(activity, errorMessage);
-  }
-
-  private static void showErrorInternal(final Activity activity, final String errorMessage) {
-    activity.runOnUiThread(new Runnable() {
-      public void run() {
-        Toast.makeText(activity, errorMessage, Toast.LENGTH_LONG).show();
-      }
-    });
-  }
-
-  private static String getErrorMessage(Activity activity, String message) {
-    Resources resources = activity.getResources();
-    if (message == null) {
-      return resources.getString(R.string.error);
+    /**
+     * Logs the given message and shows an error alert dialog with it.
+     *
+     * @param activity activity
+     * @param tag      log tag to use
+     * @param message  message to log and show or {@code null} for none
+     */
+    public static void logAndShowError(Activity activity, String tag, String message) {
+        String errorMessage = getErrorMessage(activity, message);
+        Log.e(tag, errorMessage);
+        showErrorInternal(activity, errorMessage);
     }
-    return resources.getString(R.string.error_format, message);
-  }
+
+    /**
+     * Shows an error alert dialog with the given message.
+     *
+     * @param activity activity
+     * @param message  message to show or {@code null} for none
+     */
+    public static void showError(Activity activity, String message) {
+        String errorMessage = getErrorMessage(activity, message);
+        showErrorInternal(activity, errorMessage);
+    }
+
+    private static void showErrorInternal(final Activity activity, final String errorMessage) {
+        activity.runOnUiThread(new Runnable() {
+            public void run() {
+                Toast.makeText(activity, errorMessage, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private static String getErrorMessage(Activity activity, String message) {
+        Resources resources = activity.getResources();
+        if (message == null) {
+            return resources.getString(R.string.error);
+        }
+        return resources.getString(R.string.error_format, message);
+    }
 }
