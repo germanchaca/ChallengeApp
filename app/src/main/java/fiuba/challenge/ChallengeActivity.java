@@ -3,23 +3,14 @@ package fiuba.challenge;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,13 +22,11 @@ import com.google.android.youtube.player.YouTubePlayerView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 import fiuba.challenge.adapter.GridListAdapter;
 import fiuba.challenge.adapter.OpenChallengesListAdapter;
 import fiuba.challenge.model.Challenge;
 import fiuba.challenge.model.Proof;
-import fiuba.challenge.model.User;
 import fiuba.challenge.youtube.Utils;
 
 public class ChallengeActivity  extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener{
@@ -81,7 +70,7 @@ public class ChallengeActivity  extends YouTubeBaseActivity implements YouTubePl
         super.onCreate(savedInstanceState);
 
         challenge = (Challenge) getIntent().getSerializableExtra(OpenChallengesListAdapter.CHALLENGE_INTENT);
-        videoId = challenge.getRulesVideoUrl();
+        videoId = challenge.getRulesVideoId();
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
@@ -94,7 +83,7 @@ public class ChallengeActivity  extends YouTubeBaseActivity implements YouTubePl
         seeRulesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setVideoId(challenge.getRulesVideoUrl());
+                setVideoId(challenge.getRulesVideoId());
             }
         });
 
@@ -103,28 +92,34 @@ public class ChallengeActivity  extends YouTubeBaseActivity implements YouTubePl
         mLayoutManager = new GridLayoutManager(this,GRID_COLS);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        List proofs = new ArrayList<Proof>();
-        Proof p1 = new Proof("Y_UmWdcTrrc",new User("Charlie"), null);
-        Proof p2 = new Proof("1KhZKNZO8mQ",new User("Sam"), null);
-        Proof p3 = new Proof("UiLSiqyDf4Y",new User("Joe"), null);
-        Proof p4 = new Proof("UiLSiqyDf4Y",new User("Santi"), null);
+        //List proofs = getListProofsExample();
 
-        proofs.add(p1);
-        proofs.add(p2);
-        proofs.add(p3);
-        proofs.add(p4);
-        proofs.add(p1);
-        proofs.add(p2);
-        proofs.add(p3);
-        proofs.add(p4);
-        proofs.add(p1);
-        proofs.add(p2);
-        proofs.add(p3);
-        proofs.add(p4);
-
-        mAdapter = new GridListAdapter(proofs,videoId);
+        mAdapter = new GridListAdapter(challenge.getProofs(),videoId);
 
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    @NonNull
+    private List getListProofsExample() {
+        List proofs = new ArrayList<Proof>();
+        Proof p1 = new Proof("Y_UmWdcTrrc","Charlie", null);
+        Proof p2 = new Proof("1KhZKNZO8mQ","Sam", null);
+        Proof p3 = new Proof("UiLSiqyDf4Y","Joe", null);
+        Proof p4 = new Proof("UiLSiqyDf4Y","Santi", null);
+
+        proofs.add(p1);
+        proofs.add(p2);
+        proofs.add(p3);
+        proofs.add(p4);
+        proofs.add(p1);
+        proofs.add(p2);
+        proofs.add(p3);
+        proofs.add(p4);
+        proofs.add(p1);
+        proofs.add(p2);
+        proofs.add(p3);
+        proofs.add(p4);
+        return proofs;
     }
 
     private void initVideoView() {

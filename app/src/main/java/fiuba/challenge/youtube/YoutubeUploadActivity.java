@@ -18,7 +18,10 @@ import android.view.View.OnClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import fiuba.challenge.CreateChallengeActivity;
 import fiuba.challenge.R;
+import fiuba.challenge.adapter.OpenChallengesListAdapter;
+import fiuba.challenge.model.Challenge;
 import fiuba.challenge.youtube.SubmitActivity;
 
 public class YoutubeUploadActivity extends Activity {
@@ -26,11 +29,12 @@ public class YoutubeUploadActivity extends Activity {
 	  private static final String LOG_TAG = YoutubeUploadActivity.class.getSimpleName();
 	  private static final int CAPTURE_RETURN = 1;
 	  private static final int GALLERY_RETURN = 2;
-	  private static final int SUBMIT_RETURN = 3;
       private static final int REQUEST_CAMERA = 11;
       private static final int REQUEST_GALLERY = 12;
     private static final int REQUEST_GET_ACCOUNTS = 13 ;
     private Intent data;
+    private String challengeTitle;
+    private String challengeDescription;
 
     public void capture(){
         Intent i = new Intent();
@@ -43,7 +47,10 @@ public class YoutubeUploadActivity extends Activity {
 	    super.onCreate(savedInstanceState);
 	    this.setContentView(R.layout.activity_youtube_upload);
 
-	    findViewById(R.id.captureButton).setOnClickListener(new OnClickListener() {
+        challengeTitle = (String) getIntent().getStringExtra(CreateChallengeActivity.TITLE);
+        challengeDescription = (String) getIntent().getSerializableExtra(CreateChallengeActivity.DESCRIPTION);
+
+        findViewById(R.id.captureButton).setOnClickListener(new OnClickListener() {
 	      @TargetApi(Build.VERSION_CODES.M)
           @Override
 	      public void onClick(View v) {
@@ -140,6 +147,7 @@ public class YoutubeUploadActivity extends Activity {
 
 	      }
 	      break;
+        /*
 	    case SUBMIT_RETURN:
 	      if (resultCode == RESULT_OK) {
 	        Toast.makeText(YoutubeUploadActivity.this, "thank you!", Toast.LENGTH_LONG).show();
@@ -147,14 +155,16 @@ public class YoutubeUploadActivity extends Activity {
               Log.d("YoutubeUploadActivity",videoId );
           } else {
 	      }
-	      break;
+	      break;*/
 	    }
 	  }
 
     public void startSubmitActivity(Intent data){
         Intent intent = new Intent(this, SubmitActivity.class);
+        intent.putExtra(CreateChallengeActivity.TITLE, challengeTitle);
+        intent.putExtra(CreateChallengeActivity.DESCRIPTION, challengeDescription);
         intent.setData(data.getData());
-        startActivityForResult(intent, SUBMIT_RETURN);
+        startActivity(intent);
     }
 
 	  @Override

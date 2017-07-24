@@ -1,8 +1,7 @@
 package fiuba.challenge.model;
 
-import android.graphics.drawable.Drawable;
-
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,7 +9,19 @@ import java.util.List;
  */
 public class Challenge implements Serializable {
     private String title;
-    private String rulesVideoUrl;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    private String username;
+    private String description;
+    private String rulesVideoId;
+    private Long creationDate;
     private List<Proof> proofs;
 
     public List<Proof> getProofs() {
@@ -20,18 +31,26 @@ public class Challenge implements Serializable {
     public void setProofs(List<Proof> proofs) {
         this.proofs = proofs;
     }
+    public void addProof(Proof proof){
+        this.proofs.add(proof);
+    }
+
+    public Challenge() {
+        this.proofs = new ArrayList<>();
+    }
 
     public Challenge(String title,  String rulesVideoUrl) {
+        this.proofs = new ArrayList<>();
         this.title = title;
-        this.rulesVideoUrl = rulesVideoUrl;
+        this.rulesVideoId = rulesVideoUrl;
     }
 
-    public String getRulesVideoUrl() {
-        return rulesVideoUrl;
+    public String getRulesVideoId() {
+        return rulesVideoId;
     }
 
-    public void setRulesVideoUrl(String rulesVideoUrl) {
-        this.rulesVideoUrl = rulesVideoUrl;
+    public void setRulesVideoId(String rulesVideoUrl) {
+        this.rulesVideoId = rulesVideoUrl;
     }
 
     public String getTitle() {
@@ -41,5 +60,21 @@ public class Challenge implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Long getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Long creationDate) {
+        this.creationDate = creationDate;
     }
 }

@@ -6,34 +6,50 @@ import java.io.Serializable;
  * Created by german on 5/31/2017.
  */
 public class Proof implements Serializable {
-    private final Challenge challenge;
-    private String urlVideo;
-    private User user;
 
-    public Proof(String urlVideo, User user, Challenge challenge) {
-        this.urlVideo = urlVideo;
-        this.user = user;
+    private Challenge challenge;
+    private String videoId;
+    private String username;
+
+    public Proof(String videoId, String username, Long creationDate) {
+        this.videoId = videoId;
+        this.username = username;
+        this.creationDate = creationDate;
+    }
+
+    public Long getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Long creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    private Long creationDate;
+
+    public Proof(){
+
+    }
+    public void setChallenge(Challenge challenge) {
         this.challenge = challenge;
     }
-
-    public User getUser() {
-        return user;
+    public String getVideoId() {
+        return videoId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setVideoId(String videoId) {
+        this.videoId = videoId;
     }
-
-    public String getUrlVideo() {
-        return urlVideo;
-    }
-
-    public void setUrlVideo(String urlVideo) {
-        this.urlVideo = urlVideo;
-    }
-
 
     public Challenge getChallenge() {
         return challenge;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

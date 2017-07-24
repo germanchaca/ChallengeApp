@@ -63,24 +63,24 @@ public class GridListAdapter extends RecyclerView.Adapter<GridListAdapter.Simple
     public void onBindViewHolder(final SimpleViewHolder holder, int position) {
         final Proof proof = proofList.get(position);
 
-        holder.thumbnail.setTag(proof.getUrlVideo());
+        holder.thumbnail.setTag(proof.getVideoId());
 
         YouTubeThumbnailLoader loader = thumbnailListener.getThumbnailViewToLoaderMap().get(holder.thumbnail);
         if (loader == null) {
             // 2) The view is already created, and is currently being initialized. We store the
             //    current videoId in the tag.
-            holder.thumbnail.setTag(proof.getUrlVideo());
+            holder.thumbnail.setTag(proof.getVideoId());
         } else {
             // 3) The view is already created and already initialized. Simply set the right videoId
             //    on the loader.
             holder.thumbnail.setImageResource(R.drawable.loading_thumbnail);
-            loader.setVideo(proof.getUrlVideo());
+            loader.setVideo(proof.getVideoId());
         }
-        holder.userNameTextView.setText(proof.getUser().getName());
+        holder.userNameTextView.setText(proof.getUsername());
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setVideoId(proof.getUrlVideo() );
+                setVideoId(proof.getVideoId() );
             }
         });
     }

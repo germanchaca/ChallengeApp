@@ -48,18 +48,18 @@ public class OpenChallengesListAdapter extends RecyclerView.Adapter<OpenChalleng
     public void onBindViewHolder(final SimpleViewHolder holder, int position) {
         final Challenge challenge = challengeList.get(position);
 
-        holder.thumbnail.setTag(challenge.getRulesVideoUrl());
+        holder.thumbnail.setTag(challenge.getRulesVideoId());
 
         YouTubeThumbnailLoader loader = thumbnailListener.getThumbnailViewToLoaderMap().get(holder.thumbnail);
         if (loader == null) {
             // 2) The view is already created, and is currently being initialized. We store the
             //    current videoId in the tag.
-            holder.thumbnail.setTag(challenge.getRulesVideoUrl());
+            holder.thumbnail.setTag(challenge.getRulesVideoId());
         } else {
             // 3) The view is already created and already initialized. Simply set the right videoId
             //    on the loader.
             holder.thumbnail.setImageResource(R.drawable.loading_thumbnail);
-            loader.setVideo(challenge.getRulesVideoUrl());
+            loader.setVideo(challenge.getRulesVideoId());
         }
 
         holder.titleTextView.setText(challenge.getTitle());

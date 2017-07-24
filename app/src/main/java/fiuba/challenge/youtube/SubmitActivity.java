@@ -34,6 +34,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -46,7 +50,11 @@ import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.YouTubeScopes;
 
+import fiuba.challenge.CreateChallengeActivity;
+import fiuba.challenge.MainActivity;
 import fiuba.challenge.R;
+import fiuba.challenge.model.Challenge;
+import fiuba.challenge.model.Proof;
 
 public class SubmitActivity extends Activity {
 
@@ -57,7 +65,14 @@ public class SubmitActivity extends Activity {
 	  static final int REQUEST_AUTHORIZATION = 1;
 	  static final int REQUEST_ACCOUNT_PICKER = 2;
 
-	  /** Global instance of Youtube object to make all API requests. */ 
+	private String FIREBASE_URL = "https://challenge-6f44d.firebaseio.com/";
+	private String FIREBASE_CHILD_LAST_CHALLENGE_ID = "lastChallengeId";
+	private String FIREBASE_CHILD = "challenges";
+
+	Firebase firebaseLastChallengeId;
+	Firebase firebaseChallenges;
+
+	/** Global instance of Youtube object to make all API requests. */
 	  YouTube youtube;
 	  int numAsyncTasks;
 	  
@@ -74,6 +89,8 @@ public class SubmitActivity extends Activity {
 
     final HttpTransport httpTransport =  AndroidHttp.newCompatibleTransport();
     final JsonFactory jsonFactory = new GsonFactory();
+	private String challengeTitle;
+	private String challengeDescription;
 
 	@Override
 	  public void onCreate(Bundle savedInstanceState) {
@@ -82,6 +99,11 @@ public class SubmitActivity extends Activity {
 	    Logger.getLogger("com.google.api.client").setLevel(LOGGING_LEVEL);
 
 	    setContentView(R.layout.activity_submit);
+
+		Firebase.setAndroidContext(this);
+
+		challengeTitle = (String) getIntent().getStringExtra(CreateChallengeActivity.TITLE);
+		challengeDescription = (String) getIntent().getStringExtra(CreateChallengeActivity.DESCRIPTION);
 
 		credential = GoogleAccountCredential.usingOAuth2(this, Collections.singleton(YouTubeScopes.YOUTUBE_UPLOAD));
 		SharedPreferences settings = getPreferences(Context.MODE_PRIVATE);
@@ -227,10 +249,40 @@ public class SubmitActivity extends Activity {
 	  }
 
 	public void endSubmit(String videoId){
-		Intent i = getIntent();
-		i.putExtra("VIDEOID", videoId);
-		setResult(RESULT_OK, i);
-		finish();
+		//sacar el lastChallengeId
+		firebaseChallenges = new Firebase(FIREBASE_URL).child(FIREBASE_CHILD);
+
+		firebaseLastChallengeId = new Firebase(FIREBASE_URL).child(FIREBASE_CHILD_LAST_CHALLENGE_ID);
+		firebaseLastChallengeId.addValueEventListener(new ValueEventListener() {
+
+			@Override
+			public void onDataChange(DataSnapshot snapshot) {
+				int lastChallengeId = Integer.parseInt(snapshot.getValue().toString());
+				lastChallengeId++;
+				Log.d(TAG, "lastChallengeId: " + lastChallengeId);
+
+				firebaseChallenges.child(String.valueOf(lastChallengeId)).push();
+
+				firebaseLastChallengeId.setValue(String.valueOf(lastChallengeId));
+			}
+
+
+			@Override
+			public void onCancelled(FirebaseError error) {
+				Log.e(TAG, "FirebaseError retrieving lastChallengeId: " + error.toString());
+			}
+
+		});
+
+		//cuando lo tengo mandar a firebase titulo, descripcion y videoId del challenge a postear
+
+		//actualizar el lastChallengeId
+
+		// mandar al mainActivity
+		Intent intent = new Intent(this, MainActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(intent);
+
 	}
 
 	  private void chooseAccount() {
@@ -250,7 +302,6 @@ public class SubmitActivity extends Activity {
 		  }
 		  return dialog;
 	  }
-
 
 
 }

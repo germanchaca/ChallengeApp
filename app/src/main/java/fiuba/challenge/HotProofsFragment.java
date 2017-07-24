@@ -47,12 +47,18 @@ public class HotProofsFragment extends Fragment {
         Challenge c2 = new Challenge("Ice bucket Challenge","");
         Challenge c3 = new Challenge("Basketball Challenge","");
 
-        Proof p1 = new Proof("", new User("Alex"),c1);
-        Proof p2 = new Proof("", new User("Sam"),c2);
-        Proof p3 = new Proof("", new User("Jollie"),c3);
-        Proof p4 = new Proof("", new User("Fede"),c1);
-        Proof p5 = new Proof("", new User("Pablo"),c2);
-        Proof p6 = new Proof("", new User("Ger"),c3);
+        Proof p1 = new Proof("", "Alex",0L);
+        p1.setChallenge(c1);
+        Proof p2 = new Proof("", "Sam",0L);
+        p2.setChallenge(c2);
+        Proof p3 = new Proof("", "Jollie",0L);
+        p3.setChallenge(c3);
+        Proof p4 = new Proof("", "Fede",0L);
+        p4.setChallenge(c1);
+        Proof p5 = new Proof("", "Pablo",0L);
+        p5.setChallenge(c2);
+        Proof p6 = new Proof("", "Ger",0L);
+        p6.setChallenge(c3);
         proofs.add(p1);
         proofs.add(p2);
         proofs.add(p3);
