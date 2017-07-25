@@ -90,12 +90,14 @@
             />
         </LinearLayout>
         <android.support.design.widget.FloatingActionButton
+            android:id="@+id/postProofVideo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_gravity="bottom|right"
             android:layout_centerInParent="true"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:onClick="uploadVideo"
             app:elevation="@dimen/elevation"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:src="@drawable/ic_videocam_black_24dp"/>

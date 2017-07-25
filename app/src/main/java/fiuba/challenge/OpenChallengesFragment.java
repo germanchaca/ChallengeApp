@@ -65,9 +65,10 @@ public class OpenChallengesFragment extends Fragment {
                 challenges.clear();
                 for (DataSnapshot data : snapshot.getChildren()){
                     String challengeId = data.getKey();
-                    Log.d(TAG, "challengeId: " + challengeId);
+                    //Log.d(TAG, "challengeId: " + challengeId);
 
                     Challenge challenge = new Challenge();
+                    challenge.setId(challengeId);
 
                     for (DataSnapshot challengeSnapshot : data.getChildren()) {
                         switch (challengeSnapshot.getKey().toString()){
@@ -100,7 +101,7 @@ public class OpenChallengesFragment extends Fragment {
 
                                 for (DataSnapshot proofData : challengeSnapshot.getChildren()) {
                                     String proofId = proofData.getKey();
-                                    Log.d(TAG, "proofId: " + proofId);
+                                    //Log.d(TAG, "proofId: " + proofId);
                                     Proof proof = new Proof();
                                     proof.setChallenge(challenge);
                                     for (DataSnapshot proofSnapshot : proofData.getChildren()) {
@@ -118,7 +119,7 @@ public class OpenChallengesFragment extends Fragment {
                                                 proof.setVideoId(proofVideoId);
                                                 break;
                                         }
-                                        Log.d(TAG, "Key: " + proofSnapshot.getKey().toString() + ", Value: " + proofSnapshot.getValue().toString());
+                                        //Log.d(TAG, "Key: " + proofSnapshot.getKey().toString() + ", Value: " + proofSnapshot.getValue().toString());
 
                                     }
                                     challenge.addProof(proof);
@@ -126,7 +127,7 @@ public class OpenChallengesFragment extends Fragment {
                                 break;
 
                         }
-                        Log.d(TAG, "Key: " + challengeSnapshot.getKey().toString() + ", Value: " + challengeSnapshot.getValue().toString());
+                        //Log.d(TAG, "Key: " + challengeSnapshot.getKey().toString() + ", Value: " + challengeSnapshot.getValue().toString());
                     }
                     challenges.add(challenge);
                 }

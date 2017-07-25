@@ -1,20 +1,19 @@
 package fiuba.challenge.model;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import java.io.Serializable;
 
-/**
- * Created by german on 5/31/2017.
- */
 public class Proof implements Serializable {
 
     private Challenge challenge;
     private String videoId;
     private String username;
+    private Long creationDate;
 
     public Proof(String videoId, String username, Long creationDate) {
         this.videoId = videoId;
         this.username = username;
-        this.creationDate = creationDate;
     }
 
     public Long getCreationDate() {
@@ -25,10 +24,8 @@ public class Proof implements Serializable {
         this.creationDate = creationDate;
     }
 
-    private Long creationDate;
-
     public Proof(){
-
+        this.creationDate =  System.currentTimeMillis();;
     }
     public void setChallenge(Challenge challenge) {
         this.challenge = challenge;
@@ -51,5 +48,18 @@ public class Proof implements Serializable {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public JSONObject toJSON() {
+
+        JSONObject jo = new JSONObject();
+        try {
+            jo.put("creationDate", creationDate);
+            jo.put("username", username);
+            jo.put("videoId", videoId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jo;
     }
 }

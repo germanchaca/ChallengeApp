@@ -1,7 +1,5 @@
 package fiuba.challenge.youtube;
 
-import java.util.List;
-
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -12,29 +10,27 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.TextView;
-import android.widget.Toast;
+
+import java.util.List;
 
 import fiuba.challenge.CreateChallengeActivity;
 import fiuba.challenge.R;
-import fiuba.challenge.adapter.OpenChallengesListAdapter;
-import fiuba.challenge.model.Challenge;
-import fiuba.challenge.youtube.SubmitActivity;
 
-public class YoutubeUploadActivity extends Activity {
+public class YoutubeProofUploadActivity extends Activity {
 
-	  private static final String LOG_TAG = YoutubeUploadActivity.class.getSimpleName();
+    private static final String LOG_TAG = YoutubeProofUploadActivity.class.getSimpleName();
 	  private static final int CAPTURE_RETURN = 1;
 	  private static final int GALLERY_RETURN = 2;
       private static final int REQUEST_CAMERA = 11;
       private static final int REQUEST_GALLERY = 12;
     private static final int REQUEST_GET_ACCOUNTS = 13 ;
+    public static final String CHALLENGE_ID = "ChallengeId";
     private Intent data;
     private String challengeTitle;
     private String challengeDescription;
+    private String challengeId;
 
     public void capture(){
         Intent i = new Intent();
@@ -46,6 +42,8 @@ public class YoutubeUploadActivity extends Activity {
 	  public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	    this.setContentView(R.layout.activity_youtube_upload);
+
+        challengeId = (String) getIntent().getStringExtra(CHALLENGE_ID);
 
         challengeTitle = (String) getIntent().getStringExtra(CreateChallengeActivity.TITLE);
         challengeDescription = (String) getIntent().getStringExtra(CreateChallengeActivity.DESCRIPTION);
@@ -160,11 +158,13 @@ public class YoutubeUploadActivity extends Activity {
 	  }
 
     public void startSubmitActivity(Intent data){
-        Intent intent = new Intent(this, SubmitActivity.class);
+        Intent intent = new Intent(this, SubmitProofActivity.class);
         intent.putExtra(CreateChallengeActivity.TITLE, challengeTitle);
         intent.putExtra(CreateChallengeActivity.DESCRIPTION, challengeDescription);
+        intent.putExtra(CHALLENGE_ID,challengeId);
         intent.setData(data.getData());
         startActivity(intent);
+        //finish();
     }
 
 	  @Override

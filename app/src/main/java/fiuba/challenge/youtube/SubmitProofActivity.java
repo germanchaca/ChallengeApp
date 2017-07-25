@@ -53,8 +53,10 @@ import fiuba.challenge.LoginActivity;
 import fiuba.challenge.MainActivity;
 import fiuba.challenge.R;
 import fiuba.challenge.model.ChallengeWrapper;
+import fiuba.challenge.model.Proof;
+import fiuba.challenge.model.ProofWrapper;
 
-public class SubmitActivity extends Activity {
+public class SubmitProofActivity extends Activity {
 
 	  private static final Level LOGGING_LEVEL = Level.OFF;
 	  private static final String PREF_ACCOUNT_NAME = "accountName";
@@ -87,6 +89,7 @@ public class SubmitActivity extends Activity {
     final JsonFactory jsonFactory = new GsonFactory();
 	private String challengeTitle;
 	private String challengeDescription;
+	private String challengeId;
 
 	@Override
 	  public void onCreate(Bundle savedInstanceState) {
@@ -100,6 +103,7 @@ public class SubmitActivity extends Activity {
 
 		Firebase.setAndroidContext(this);
 
+		challengeId = (String) getIntent().getStringExtra(YoutubeProofUploadActivity.CHALLENGE_ID);
 		challengeTitle = (String) getIntent().getStringExtra(CreateChallengeActivity.TITLE);
 		challengeDescription = (String) getIntent().getStringExtra(CreateChallengeActivity.DESCRIPTION);
 
@@ -118,7 +122,7 @@ public class SubmitActivity extends Activity {
 
 	    if (cursor.getCount() == 0) {
 	      Log.d("cursor==", "not a valid video uri");
-	      Toast.makeText(SubmitActivity.this, "not a valid video uri", Toast.LENGTH_LONG).show();
+	      Toast.makeText(SubmitProofActivity.this, "not a valid video uri", Toast.LENGTH_LONG).show();
 	    } else {
 	      
 	      if (cursor.moveToFirst()) {
@@ -161,7 +165,7 @@ public class SubmitActivity extends Activity {
 		    runOnUiThread(new Runnable() {
 		      public void run() {
 		        Dialog dialog =
-		            GooglePlayServicesUtil.getErrorDialog(connectionStatusCode, SubmitActivity.this,
+		            GooglePlayServicesUtil.getErrorDialog(connectionStatusCode, SubmitProofActivity.this,
 		                REQUEST_GOOGLE_PLAY_SERVICES);
 		        dialog.show();
 		      }
@@ -181,7 +185,7 @@ public class SubmitActivity extends Activity {
 	        break;
 	      case REQUEST_AUTHORIZATION:
 	        if (resultCode == Activity.RESULT_OK) {
-	        	AsyncLoadYoutube.run(this,challengeTitle,challengeDescription);
+	        	AsyncLoadYoutubeProof.run(this,challengeTitle,challengeDescription);
 	        } else {
 	          chooseAccount();
 	        }
@@ -195,7 +199,7 @@ public class SubmitActivity extends Activity {
 	            SharedPreferences.Editor editor = settings.edit();
 	            editor.putString(PREF_ACCOUNT_NAME, accountName);
 	            editor.commit();
-	            AsyncLoadYoutube.run(this,challengeTitle,challengeDescription);
+	            AsyncLoadYoutubeProof.run(this,challengeTitle,challengeDescription);
 	          }
 	        }
 	        break;
@@ -242,25 +246,22 @@ public class SubmitActivity extends Activity {
 	    } else {
 	      // upload youtube.
 
-	    	AsyncLoadYoutube.run(this,challengeTitle,challengeDescription);
+	    	AsyncLoadYoutubeProof.run(this,challengeTitle,challengeDescription);
 	    }
 	  }
 
 	public void endSubmit(String videoId){
 
-        final ChallengeWrapper challenge = new ChallengeWrapper();
+        final ProofWrapper proof = new ProofWrapper();
 
-        challenge.setTitle(challengeTitle);
-        challenge.setDescription(challengeDescription);
-        challenge.setUsername( credential.getSelectedAccountName());
-        challenge.setVideoId(videoId);
+		proof.setUsername( credential.getSelectedAccountName());
+		proof.setVideoId(videoId);
 
-		//sacar el lastChallengeId
-		firebaseChallenges = new Firebase(FIREBASE_URL).child(FIREBASE_CHILD);
+		firebaseChallenges = new Firebase(FIREBASE_URL).child(FIREBASE_CHILD).child(challengeId).child("proofs");
 
         Firebase newPostRef = firebaseChallenges.push();
 
-        newPostRef.setValue(challenge, new Firebase.CompletionListener() {
+        newPostRef.setValue(proof, new Firebase.CompletionListener() {
             @Override
             public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                 if (firebaseError != null) {
@@ -269,22 +270,23 @@ public class SubmitActivity extends Activity {
                     Log.d(TAG,"Data saved successfully.");
 
                    AlertDialog.Builder builder =
-                            new AlertDialog.Builder(SubmitActivity.this, android.R.style.Theme_Material_Dialog_Alert);
+                            new AlertDialog.Builder(SubmitProofActivity.this, android.R.style.Theme_Material_Dialog_Alert);
                     builder.setTitle("Todo listo");
-                    builder.setMessage("El challenge fue creado con éxito, en breve lo verás en los listados");
+                    builder.setMessage("Su video fue cargado con éxito");
                     builder.setIcon(R.drawable.ic_done_black_24dp);
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
                         public void onClick(DialogInterface dialog, int id) {
                             Log.d(TAG,"Exito");
                             // mandar al mainActivity
-                            Intent intent = new Intent(SubmitActivity.this, MainActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(intent);
+							Intent intent = new Intent(SubmitProofActivity.this, MainActivity.class);
+							intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+							startActivity(intent);
                         }
 
                     });
                     builder.show();
+
                 }
             }
         });

@@ -14,20 +14,11 @@
 
 package fiuba.challenge.youtube;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-
 import android.app.Activity;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.widget.TextView;
 
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
@@ -39,22 +30,28 @@ import com.google.api.services.youtube.model.Video;
 import com.google.api.services.youtube.model.VideoSnippet;
 import com.google.api.services.youtube.model.VideoStatus;
 
-import fiuba.challenge.youtube.SubmitActivity;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 /**
  * Asynchronously load the tasks.
  * 
  * @author Yaniv Inbar
  */
-class AsyncLoadYoutube extends YoutubeAsyncTask {
-	
+class AsyncLoadYoutubeProof extends YoutubeAsyncTaskProof {
+
 	static final String TAG = "YoutubeSampleActivity";
     static final int REQUEST_AUTHORIZATION = 1;
-    protected final SubmitActivity context;
+    protected final SubmitProofActivity context;
 	private final String title;
     private final String description;
 
-	AsyncLoadYoutube(SubmitActivity submitActivity, String title,String description) {
+	AsyncLoadYoutubeProof(SubmitProofActivity submitActivity, String title, String description) {
     super(submitActivity);
       context = submitActivity;
         this.title = title;
@@ -198,8 +195,8 @@ class AsyncLoadYoutube extends YoutubeAsyncTask {
   }
 
   
-  static void run(SubmitActivity submitActivity, String title, String description) {
-    new AsyncLoadYoutube(submitActivity,title,description).execute();
+  static void run(SubmitProofActivity submitActivity, String title, String description) {
+    new AsyncLoadYoutubeProof(submitActivity,title,description).execute();
   }
   
   private File getFileFromUri(Uri uri) throws IOException {

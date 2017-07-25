@@ -27,7 +27,9 @@ import fiuba.challenge.adapter.GridListAdapter;
 import fiuba.challenge.adapter.OpenChallengesListAdapter;
 import fiuba.challenge.model.Challenge;
 import fiuba.challenge.model.Proof;
+import fiuba.challenge.youtube.SubmitProofActivity;
 import fiuba.challenge.youtube.Utils;
+import fiuba.challenge.youtube.YoutubeProofUploadActivity;
 
 public class ChallengeActivity  extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener{
     private static final String TAG = "ChallengeActivity";
@@ -44,6 +46,7 @@ public class ChallengeActivity  extends YouTubeBaseActivity implements YouTubePl
     private String videoId;
     private Challenge challenge;
     private Button seeRulesButton;
+    private Button postProofVideoButton;
 
     @Override
     protected void onRestart() {
@@ -67,6 +70,7 @@ public class ChallengeActivity  extends YouTubeBaseActivity implements YouTubePl
 
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
+        //TODO agregar descripcion
         super.onCreate(savedInstanceState);
 
         challenge = (Challenge) getIntent().getSerializableExtra(OpenChallengesListAdapter.CHALLENGE_INTENT);
@@ -120,6 +124,12 @@ public class ChallengeActivity  extends YouTubeBaseActivity implements YouTubePl
         proofs.add(p3);
         proofs.add(p4);
         return proofs;
+    }
+
+    public void uploadVideo(View view){
+        Intent i = new Intent(this, YoutubeProofUploadActivity.class);
+        i.putExtra(YoutubeProofUploadActivity.CHALLENGE_ID,challenge.getId());
+        startActivity(i);
     }
 
     private void initVideoView() {
