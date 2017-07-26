@@ -17,11 +17,18 @@ import java.util.List;
 
 import fiuba.challenge.R;
 import fiuba.challenge.model.Proof;
+import fiuba.challenge.utils.DateHelper;
 import fiuba.challenge.youtube.ThumbnailListener;
 import fiuba.challenge.youtube.Utils;
 
 public class GridListAdapter extends RecyclerView.Adapter<GridListAdapter.SimpleViewHolder> {
     private final ThumbnailListener thumbnailListener;
+    private final TextView descriptionTextView;
+    private final TextView creationDateTextView;
+    private final Context context;
+
+
+
     private List<Proof> proofList;
     private String videoId;
     private YouTubePlayer player;
@@ -32,19 +39,24 @@ public class GridListAdapter extends RecyclerView.Adapter<GridListAdapter.Simple
     }
 
 
-    public GridListAdapter(List<Proof> proofs, String videoId){
+    public GridListAdapter(List<Proof> proofs, String videoId, TextView descriptionTextView,TextView creationDateTextView,Context c){
         thumbnailListener = new ThumbnailListener();
         proofList = proofs;
         this.videoId = videoId;
+        this.descriptionTextView = descriptionTextView;
+        this.creationDateTextView = creationDateTextView;
+        this.context = c;
     }
 
-    public void setVideoId(String videoId) {
+    public boolean setVideoId(String videoId) {
         if (videoId != null && !videoId.equals(this.videoId)) {
             this.videoId = videoId;
             if(this.player != null){
                 player.loadVideo(videoId);
+                return true;
             }
         }
+        return false;
     }
 
     @Override
@@ -80,7 +92,11 @@ public class GridListAdapter extends RecyclerView.Adapter<GridListAdapter.Simple
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setVideoId(proof.getVideoId() );
+                boolean result = setVideoId(proof.getVideoId() );
+                if(result) {
+                    descriptionTextView.setText(proof.getUsername());
+                    creationDateTextView.setText(DateHelper.convertTimeToDateString(context,proof.getCreationDate() ,true,true,true,false,false,true,false));
+                }
             }
         });
     }

@@ -27,7 +27,7 @@ import fiuba.challenge.adapter.GridListAdapter;
 import fiuba.challenge.adapter.OpenChallengesListAdapter;
 import fiuba.challenge.model.Challenge;
 import fiuba.challenge.model.Proof;
-import fiuba.challenge.youtube.SubmitProofActivity;
+import fiuba.challenge.utils.DateHelper;
 import fiuba.challenge.youtube.Utils;
 import fiuba.challenge.youtube.YoutubeProofUploadActivity;
 
@@ -36,7 +36,6 @@ public class ChallengeActivity  extends YouTubeBaseActivity implements YouTubePl
     protected RecyclerView mRecyclerView;
     protected GridListAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
-    protected TextView challengeTitleTextView;
 
     protected static int GRID_COLS = 2;
     protected YouTubePlayerView rulesVideoView;
@@ -46,7 +45,11 @@ public class ChallengeActivity  extends YouTubeBaseActivity implements YouTubePl
     private String videoId;
     private Challenge challenge;
     private Button seeRulesButton;
-    private Button postProofVideoButton;
+    private TextView titleText;
+    private TextView descriptionTextView;
+    private TextView creationDateTextView;
+
+
 
     @Override
     protected void onRestart() {
@@ -55,17 +58,17 @@ public class ChallengeActivity  extends YouTubeBaseActivity implements YouTubePl
         super.onRestart();
     }
 
-    public void setVideoId(String videoId) {
-        Log.d(TAG, "setVideoId called");
+    public boolean setVideoId(String videoId) {
         if (videoId != null) {
-            Log.d(TAG, "valid videoId");
             this.videoId = videoId;
             if(this.youtubePlayer != null){
                 youtubePlayer.loadVideo(videoId);
+                return true;
             }else {
                 Log.e(TAG, "youtubePlayer is null");
             }
         }
+        return false;
     }
 
     @Override
@@ -79,15 +82,27 @@ public class ChallengeActivity  extends YouTubeBaseActivity implements YouTubePl
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_challenge);
-        challengeTitleTextView = (TextView) findViewById(R.id.challengeTitleTextView);
         rulesVideoView = (YouTubePlayerView) findViewById(R.id.rulesVideoView);
         mRecyclerView = (RecyclerView) findViewById(R.id.openChallengesRecyclerView);
         seeRulesButton = (Button) findViewById(R.id.seeRulesButton);
 
+        titleText = (TextView) findViewById(R.id.challengeTitleTextView);
+        titleText.setText(challenge.getTitle());
+
+        descriptionTextView = (TextView) findViewById(R.id.challengeDescriptionTextView);
+        descriptionTextView.setText(challenge.getDescription() );
+
+        creationDateTextView = (TextView) findViewById(R.id.creationDate);
+        creationDateTextView.setText(DateHelper.convertTimeToDateString(this, challenge.getCreationDate() ,true,true,true,false,false,true,false));
+
         seeRulesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setVideoId(challenge.getRulesVideoId());
+                boolean result = setVideoId(challenge.getRulesVideoId());
+                if(result) {
+                    descriptionTextView.setText(challenge.getDescription());
+                    creationDateTextView.setText(DateHelper.convertTimeToDateString(ChallengeActivity.this, challenge.getCreationDate() ,true,true,true,false,false,true,false));
+                }
             }
         });
 
@@ -98,9 +113,10 @@ public class ChallengeActivity  extends YouTubeBaseActivity implements YouTubePl
 
         //List proofs = getListProofsExample();
 
-        mAdapter = new GridListAdapter(challenge.getProofs(),videoId);
+        mAdapter = new GridListAdapter(challenge.getProofs(),videoId, descriptionTextView,creationDateTextView,this);
 
         mRecyclerView.setAdapter(mAdapter);
+
     }
 
     @NonNull

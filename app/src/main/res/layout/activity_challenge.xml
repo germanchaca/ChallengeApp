@@ -31,11 +31,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/primary_text"
-                android:text="Ice Bucket challenge"
+                android:text=""
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="8dp"
+                android:layout_marginBottom="4dp"/>
+
+            <TextView
+                android:id="@+id/challengeDescriptionTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/secondary_text"
+                android:text=""
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
                 android:layout_marginBottom="4dp"/>
 
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -46,19 +57,18 @@
                           android:paddingRight="@dimen/activity_horizontal_margin"
                           android:layout_marginBottom="8dp">
                 <TextView
-                    android:id="@+id/challengeProofQtyTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/secondary_text"
-                    android:text="10k"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:paddingRight="5dp"
-                    />
+                    android:text= "Subido "
+                    android:textAppearance="?android:attr/textAppearanceSmall"/>
+
                 <TextView
+                    android:id="@+id/creationDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/secondary_text"
-                    android:text="@string/activity_challenge_qty_proofs"
+                    android:text="hace 3 días"
                     android:textAppearance="?android:attr/textAppearanceSmall"/>
             </LinearLayout>
 

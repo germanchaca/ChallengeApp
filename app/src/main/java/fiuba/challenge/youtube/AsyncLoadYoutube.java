@@ -87,23 +87,14 @@ class AsyncLoadYoutube extends YoutubeAsyncTask {
 	      // We set a majority of the metadata with the VideoSnippet object.
 	      VideoSnippet snippet = new VideoSnippet();
 
-	      /*
-	       * The Calendar instance is used to create a unique name and description for test purposes,
-	       * so you can see multiple files being uploaded.  You will want to remove this from your
-	       * project and use your own standard names.
-	       */
-	      Calendar cal = Calendar.getInstance();
 	      snippet.setTitle(title);
 	      snippet.setDescription(description);
 
 	      // Set your keywords.
 	      List<String> tags = new ArrayList<String>();
-	      tags.add("test");
-	      tags.add("example");
-	      tags.add("java");
-	      tags.add("android");
-	      tags.add("YouTube Data API V3");
-	      tags.add("erase me");
+	      tags.add("Challenge");
+	      tags.add("app");
+	      tags.add(title);
 	      snippet.setTags(tags);
 
 	      // Set completed snippet to the video object.
@@ -183,16 +174,19 @@ class AsyncLoadYoutube extends YoutubeAsyncTask {
 
 	} catch (GoogleJsonResponseException e) {
 	      Log.e(TAG,"GoogleJsonResponseException code: " + e.getDetails().getCode() + " : " + e.getDetails().getMessage());
+		  context.showErrorDialog();
 	      e.printStackTrace();
 
 	} catch (IOException e) {
 		  Log.e(TAG,"IOException: " + e.getMessage());
-	      e.printStackTrace();
+        context.showErrorDialog();
+        e.printStackTrace();
     } catch (Throwable t) {
 	      Log.e(TAG,"Throwable: " + t.getMessage());
-	      t.printStackTrace();
+        context.showErrorDialog();
+        t.printStackTrace();
     }
-
+      context.showErrorDialog();
 	return null;
 
   }

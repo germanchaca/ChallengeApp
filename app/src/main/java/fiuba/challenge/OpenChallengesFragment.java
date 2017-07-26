@@ -73,7 +73,7 @@ public class OpenChallengesFragment extends Fragment {
                     for (DataSnapshot challengeSnapshot : data.getChildren()) {
                         switch (challengeSnapshot.getKey().toString()){
                             case "creationDate":
-                                Long creationDate =  Long.getLong(challengeSnapshot.getValue().toString());
+                                Long creationDate = Long.parseLong(challengeSnapshot.getValue().toString());
                                 challenge.setCreationDate(creationDate);
                                 break;
 
@@ -107,7 +107,7 @@ public class OpenChallengesFragment extends Fragment {
                                     for (DataSnapshot proofSnapshot : proofData.getChildren()) {
                                         switch (proofSnapshot.getKey().toString()) {
                                             case "creationDate":
-                                                Long proofCreationDate =  Long.getLong(proofSnapshot.getValue().toString());
+                                                Long proofCreationDate =  Long.parseLong(proofSnapshot.getValue().toString());
                                                 proof.setCreationDate(proofCreationDate);
                                                 break;
                                             case "username":

@@ -20,7 +20,7 @@ public class ChallengeWrapper {
     private String username;
 
     public ChallengeWrapper(){
-        this.creationDate = Long.toString(System.currentTimeMillis());
+        this.creationDate = Long.toString(System.currentTimeMillis()/1000);
     }
 
     public String getUsername() {

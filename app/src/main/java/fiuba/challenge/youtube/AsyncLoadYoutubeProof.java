@@ -181,15 +181,18 @@ class AsyncLoadYoutubeProof extends YoutubeAsyncTaskProof {
 	} catch (GoogleJsonResponseException e) {
 	      Log.e(TAG,"GoogleJsonResponseException code: " + e.getDetails().getCode() + " : " + e.getDetails().getMessage());
 	      e.printStackTrace();
+		  context.showErrorDialog();
 
 	} catch (IOException e) {
 		  Log.e(TAG,"IOException: " + e.getMessage());
+        context.showErrorDialog();
 	      e.printStackTrace();
     } catch (Throwable t) {
 	      Log.e(TAG,"Throwable: " + t.getMessage());
+        context.showErrorDialog();
 	      t.printStackTrace();
     }
-
+      context.showErrorDialog();
 	return null;
 
   }

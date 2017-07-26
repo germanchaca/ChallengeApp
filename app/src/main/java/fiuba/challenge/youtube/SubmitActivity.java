@@ -181,8 +181,8 @@ public class SubmitActivity extends Activity {
 	        break;
 	      case REQUEST_AUTHORIZATION:
 	        if (resultCode == Activity.RESULT_OK) {
-	        	AsyncLoadYoutube.run(this,challengeTitle,challengeDescription);
-	        } else {
+                uploadVideo();
+            } else {
 	          chooseAccount();
 	        }
 	        break;
@@ -195,8 +195,8 @@ public class SubmitActivity extends Activity {
 	            SharedPreferences.Editor editor = settings.edit();
 	            editor.putString(PREF_ACCOUNT_NAME, accountName);
 	            editor.commit();
-	            AsyncLoadYoutube.run(this,challengeTitle,challengeDescription);
-	          }
+                  uploadVideo();
+              }
 	        }
 	        break;
 	    }
@@ -242,9 +242,28 @@ public class SubmitActivity extends Activity {
 	    } else {
 	      // upload youtube.
 
-	    	AsyncLoadYoutube.run(this,challengeTitle,challengeDescription);
-	    }
+            uploadVideo();
+        }
 	  }
+
+    private void uploadVideo() {
+        AsyncLoadYoutube.run(this,challengeTitle,challengeDescription);
+    }
+
+    public void showErrorDialog(){
+        AlertDialog.Builder builder =
+                new AlertDialog.Builder(SubmitActivity.this, android.R.style.Theme_Material_Dialog_Alert);
+        builder.setTitle("Error");
+        builder.setMessage("Hubo un problema en la carga del video, por favor, vuelve a intentar más tarde");
+        builder.setIcon(R.drawable.ic_error_black_24dp);
+        builder.setNegativeButton("Cancelar",null);
+        builder.setPositiveButton("Reintentar", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                uploadVideo();
+            }
+        });
+        builder.show();
+    }
 
 	public void endSubmit(String videoId){
 

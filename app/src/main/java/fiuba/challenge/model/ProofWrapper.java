@@ -9,7 +9,7 @@ public class ProofWrapper {
     private String creationDate;
 
     public ProofWrapper(){
-        this.creationDate = Long.toString(System.currentTimeMillis());
+        this.creationDate = Long.toString(System.currentTimeMillis()/1000);
     }
 
     public String getVideoId() {

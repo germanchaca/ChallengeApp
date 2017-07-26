@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Challenge</string>
     <string name="activity_challenge_qty_proofs">Challengers</string>
+    <string name="activity_challenge_qty_visualizaciones">Visualizaciones</string>
+
     <string name="hot_proofs_qty_seen">Vistas</string>
     <string name="separator">-</string>
 
@@ -31,5 +33,6 @@
     <string name="refresh">Actualizar</string>
     <string name="error_player">Error in youtube player</string>
 
+    <string name="label_yesterday">Ayer</string>
 
 </resources>
