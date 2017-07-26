@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fiuba.challenge.adapter.GridListAdapter;
+import fiuba.challenge.adapter.HotProofsListAdapter;
 import fiuba.challenge.adapter.OpenChallengesListAdapter;
 import fiuba.challenge.model.Challenge;
 import fiuba.challenge.model.Proof;
@@ -48,7 +49,7 @@ public class ChallengeActivity  extends YouTubeBaseActivity implements YouTubePl
     private TextView titleText;
     private TextView descriptionTextView;
     private TextView creationDateTextView;
-
+    private Proof proof;
 
 
     @Override
@@ -73,27 +74,31 @@ public class ChallengeActivity  extends YouTubeBaseActivity implements YouTubePl
 
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
-        //TODO agregar descripcion
         super.onCreate(savedInstanceState);
-
-        challenge = (Challenge) getIntent().getSerializableExtra(OpenChallengesListAdapter.CHALLENGE_INTENT);
-        videoId = challenge.getRulesVideoId();
-
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
         setContentView(R.layout.activity_challenge);
         rulesVideoView = (YouTubePlayerView) findViewById(R.id.rulesVideoView);
         mRecyclerView = (RecyclerView) findViewById(R.id.openChallengesRecyclerView);
         seeRulesButton = (Button) findViewById(R.id.seeRulesButton);
-
         titleText = (TextView) findViewById(R.id.challengeTitleTextView);
-        titleText.setText(challenge.getTitle());
-
         descriptionTextView = (TextView) findViewById(R.id.challengeDescriptionTextView);
-        descriptionTextView.setText(challenge.getDescription() );
-
         creationDateTextView = (TextView) findViewById(R.id.creationDate);
-        creationDateTextView.setText(DateHelper.convertTimeToDateString(this, challenge.getCreationDate() ,true,true,true,false,false,true,false));
+
+        if(getIntent().hasExtra(OpenChallengesListAdapter.CHALLENGE_INTENT)){
+            challenge = (Challenge) getIntent().getSerializableExtra(OpenChallengesListAdapter.CHALLENGE_INTENT);
+            videoId = challenge.getRulesVideoId();
+            descriptionTextView.setText(challenge.getDescription() );
+            creationDateTextView.setText(DateHelper.convertTimeToDateString(this, challenge.getCreationDate() ,true,true,true,false,false,true,false));
+
+        }else {
+            proof = (Proof) getIntent().getSerializableExtra(HotProofsListAdapter.PROOF_INTENT);
+            challenge = proof.getChallenge();
+            videoId = proof.getVideoId();
+            descriptionTextView.setText(proof.getUsername());
+            creationDateTextView.setText(DateHelper.convertTimeToDateString(this,proof.getCreationDate() ,true,true,true,false,false,true,false));
+        }
+
+        titleText.setText(challenge.getTitle());
 
         seeRulesButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,7 +110,6 @@ public class ChallengeActivity  extends YouTubeBaseActivity implements YouTubePl
                 }
             }
         });
-
         initVideoView();
 
         mLayoutManager = new GridLayoutManager(this,GRID_COLS);

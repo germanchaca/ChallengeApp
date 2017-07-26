@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -19,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -33,6 +35,7 @@ import java.util.Collections;
 import java.util.List;
 
 import fiuba.challenge.youtube.SubmitActivity;
+import fiuba.challenge.youtube.SubmitProofActivity;
 import fiuba.challenge.youtube.YoutubeUploadActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -41,14 +44,15 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private FloatingActionButton fab;
 
     /** The request code when calling startActivityForResult to recover from an API service error. */
     private static final int RECOVERY_DIALOG_REQUEST = 1;
 
     private int[] tabIcons = {
-            R.drawable.ic_home_black_24dp,
-            R.drawable.ic_whatshot_black_24dp,
-            R.drawable.ic_account_circle_black_24dp
+            R.drawable.ic_home_white_24dp,
+            R.drawable.ic_whatshot_white_24dp,
+            R.drawable.ic_account_circle_white_24dp
     };
 
     @Override
@@ -62,11 +66,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-            case R.id.createChallenge:
-
-                Intent intent = new Intent(this,CreateChallengeActivity.class);
-                startActivity(intent);
-
+            case R.id.signOut:
+                signOut();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -94,6 +95,14 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
+        fab = (FloatingActionButton) findViewById(R.id.postNewChallenge);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                postNewChallenge();
+            }
+        });
+        fab.show();
         setupViewPager(viewPager);
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -107,12 +116,47 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.getTabAt(2).setIcon(tabIcons[2]);
     }
 
+    private void postNewChallenge() {
+        Intent intent = new Intent(this,CreateChallengeActivity.class);
+        startActivity(intent);
+    }
+
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new OpenChallengesFragment(), "ONE");
         adapter.addFragment(new HotProofsFragment(), "TWO");
-        adapter.addFragment(new ProfileFragment(), "THREE");
+        adapter.addFragment(new MyVideosFragment(), "THREE");
         viewPager.setAdapter(adapter);
+        getSupportActionBar().setTitle("Challenges abiertos");
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                switch (position) {
+                    case 0:
+                        getSupportActionBar().setTitle("Challenges abiertos");
+                        fab.show();
+                        break ;
+                    case 1:
+                        getSupportActionBar().setTitle("Videos más vistos");
+                        fab.hide();
+                        break ;
+                    case 2:
+                        getSupportActionBar().setTitle("Mis videos");
+                        fab.hide();
+                        break ;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -153,5 +197,35 @@ public class MainActivity extends AppCompatActivity {
         } else if (errorReason != YouTubeInitializationResult.SUCCESS) {
             Toast.makeText(this, errorReason.toString(), Toast.LENGTH_LONG).show();
         }
+    }
+
+    public void signOut(){
+
+        AlertDialog.Builder builder =
+                new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        builder.setTitle("Cerrar sesión");
+        builder.setMessage("Está seguro que desea cerrar la sesión?");
+        builder.setIcon(R.drawable.ic_done_white_24dp);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int id) {
+                SharedPreferences settings = getSharedPreferences(LoginActivity.APP, Context.MODE_PRIVATE);
+
+                if (settings.contains(LoginActivity.PREF_ACCOUNT_NAME)) {
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.remove(LoginActivity.PREF_ACCOUNT_NAME);
+                    editor.apply();
+                }
+
+                Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+
+        });
+        builder.setNegativeButton("Cancelar", null);
+        builder.show();
+
+
     }
 }

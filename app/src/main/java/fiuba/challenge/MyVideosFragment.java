@@ -1,14 +1,15 @@
 package fiuba.challenge;
 
-import android.support.v4.app.Fragment;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -20,14 +21,11 @@ import java.util.Collections;
 import java.util.List;
 
 import fiuba.challenge.adapter.HotProofsListAdapter;
-import fiuba.challenge.adapter.OpenChallengesListAdapter;
 import fiuba.challenge.model.Challenge;
 import fiuba.challenge.model.Proof;
-import fiuba.challenge.model.User;
 
-public class HotProofsFragment extends Fragment {
-    public static final String TAG = "HotProofsFragment";
-    public static final int MAX_ROWS = 20;
+public class MyVideosFragment extends Fragment {
+    public static final String TAG = "MyVideosFragment";
 
     protected RecyclerView mRecyclerView;
     protected HotProofsListAdapter mAdapter;
@@ -38,7 +36,7 @@ public class HotProofsFragment extends Fragment {
 
     Firebase firebase;
 
-    public HotProofsFragment() {
+    public MyVideosFragment() {
         // Required empty public constructor
     }
 
@@ -59,6 +57,9 @@ public class HotProofsFragment extends Fragment {
 
         final List<Proof> finalProofList = new ArrayList<Proof>();
 
+        SharedPreferences settings = getContext().getSharedPreferences(LoginActivity.APP, Context.MODE_PRIVATE);
+        final String myUser = settings.getString(LoginActivity.PREF_ACCOUNT_NAME, null);
+
         Firebase.setAndroidContext(getContext());
 
         firebase = new Firebase(FIREBASE_URL).child(FIREBASE_CHILD);
@@ -67,7 +68,6 @@ public class HotProofsFragment extends Fragment {
             @Override
 
             public void onDataChange(DataSnapshot snapshot) {
-                List proofs = new ArrayList<Proof>();
 
                 finalProofList.clear();
                 for (DataSnapshot data : snapshot.getChildren()){
@@ -126,21 +126,14 @@ public class HotProofsFragment extends Fragment {
                                                 break;
                                         }
                                     }
-                                    proofs.add(proof);
+                                    if(myUser.equals(proof.getUsername())) finalProofList.add(proof);
                                     challenge.addProof(proof);
                                 }
                                 break;
                         }
                     }
                 }
-                Collections.shuffle(proofs);
-                Log.d(TAG,String.valueOf(proofs.size()));
-
-                int finalIndex = MAX_ROWS;
-                if(proofs.size() <= MAX_ROWS){
-                    finalIndex = proofs.size();
-                }
-                finalProofList.addAll(proofs.subList(0,finalIndex));
+                Log.d(TAG,String.valueOf(finalProofList.size()));
 
                 mAdapter.notifyDataSetChanged();
             }

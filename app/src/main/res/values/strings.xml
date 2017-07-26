@@ -21,7 +21,7 @@
 
     <string name="toolbar_menu_create">Crear challenge</string>
 
-    <string name="activity_create_challenge_title">Agregar detalles</string>
+    <string name="activity_create_challenge_title">Crear nuevo challenge</string>
     <string name="activity_create_challenge_title_text">Título</string>
     <string name="activity_create_challenge_description_text">Descripción</string>
 

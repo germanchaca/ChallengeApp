@@ -5,9 +5,9 @@
         xmlns:tools="http://schemas.android.com/tools"
         tools:context=".MainActivity">
         <item
-            android:id="@+id/createChallenge"
+            android:id="@+id/signOut"
             android:orderInCategory="100"
-            android:icon="@drawable/ic_add_white_24dp"
-            android:title="@string/toolbar_menu_create"
+            android:icon="@drawable/ic_power_settings_new_white_24dp"
+            android:title="Cerrar sesión"
             app:showAsAction="always" />
     </menu>

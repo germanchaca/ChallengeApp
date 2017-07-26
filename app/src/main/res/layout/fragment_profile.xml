@@ -28,6 +28,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:visibility="gone"
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:drawableLeft="@drawable/ic_star_border_black_24dp"
             android:drawablePadding="@dimen/activity_horizontal_margin"
@@ -51,6 +52,7 @@
             android:background="@color/cardview_light_background"
             android:textColor="@color/primary_text"
             android:drawableTint="@color/icons"
+            android:visibility="gone"
             android:text="@string/profile_my_notifications"
             android:gravity="left|center_vertical"
             />
@@ -65,6 +67,7 @@
             android:background="@color/cardview_light_background"
             android:textColor="@color/primary_text"
             android:drawableTint="@color/icons"
+            android:visibility="gone"
             android:text="@string/profile_my_settings"
             android:gravity="left|center_vertical"
             />
@@ -95,6 +98,7 @@
             android:textColor="@color/primary_text"
             android:drawableTint="@color/icons"
             android:text="@string/profile_about_us"
+            android:visibility="gone"
             android:gravity="left|center_vertical"
             />
 
